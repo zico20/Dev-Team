@@ -17,11 +17,11 @@
 \usepackage{tcolorbox}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+\usepackage{amssymb}
 \usepackage{hyperref}
 
 % -----------------------------------------------------------------
-% SENG 456 -- Bireysel Proje Teslim Evrakı
-% Belge hem ekranda doldurulabilir hem de yazdırılabilir.
+% SENG 456 -- Individual Project Submission Form (completed)
 % -----------------------------------------------------------------
 
 \definecolor{courseNavy}{HTML}{17365D}
@@ -36,8 +36,8 @@
   colorlinks=true,
   linkcolor=courseBlue,
   urlcolor=courseBlue,
-  pdfauthor={OSTIM Technical University -- Software Engineering},
-  pdftitle={SENG 456 Individual Project Submission Form},
+  pdfauthor={Zain Alabdeen Mohsin Bdaiwi Almawla},
+  pdftitle={SENG 456 Individual Project Submission Form -- Autonomous Software Development Team},
   pdfsubject={Agent Orchestration and Multimodal Systems Term Project}
 }
 
@@ -69,38 +69,24 @@
   #1
 }
 
-\newcommand{\sectionintro}[1]{\textcolor{courseGray}{\small #1}\par\vspace{2pt}}
+\newtcolorbox{answerbox}{
+  colback=white,
+  colframe=courseBlue!45,
+  boxrule=0.5pt,
+  arc=1.5mm,
+  left=2.8mm,right=2.8mm,top=1.8mm,bottom=1.8mm,
+  before skip=2pt,after skip=8pt
+}
 
-% Her PDF form alanının adı benzersizdir.
-\newcounter{fieldcounter}
-\newcommand{\singlefield}[1][\linewidth]{%
-  \stepcounter{fieldcounter}%
-  \TextField[name=field\arabic{fieldcounter},width=#1,height=1.75em,
-  bordercolor={0.72 0.75 0.79},backgroundcolor={1 1 1}]{}%
-}
-\newcommand{\multifield}[1][3.2cm]{%
-  \stepcounter{fieldcounter}%
-  \TextField[multiline=true,name=field\arabic{fieldcounter},width=\linewidth,height=#1,
-  bordercolor={0.72 0.75 0.79},backgroundcolor={1 1 1}]{}%
-}
-\newcommand{\checkfield}{%
-  \stepcounter{fieldcounter}%
-  \CheckBox[name=field\arabic{fieldcounter},width=1.2em,height=1.2em,
-  bordercolor={0.35 0.40 0.45}]{}%
-}
-\newcommand{\coverfield}{%
-  \stepcounter{fieldcounter}%
-  \TextField[name=field\arabic{fieldcounter},width=\linewidth,height=1.30em,
-  bordercolor={0.72 0.75 0.79},backgroundcolor={1 1 1}]{}%
-}
-\newcommand{\answerarea}[2][3.0cm]{\textbf{#2}\par\multifield[#1]}
+\newcommand{\sectionintro}[1]{\textcolor{courseGray}{\small #1}\par\vspace{2pt}}
+\newcommand{\answerarea}[2]{\textbf{#1}\par\begin{answerbox}#2\end{answerbox}}
+\newcommand{\yes}{\textcolor{courseTeal}{\textbf{\checkmark}}}
 
 \begin{document}
-\begin{Form}
 \pagenumbering{roman}
 
 % ================================================================
-% KAPAK
+% COVER PAGE
 % ================================================================
 \begin{titlepage}
   \thispagestyle{empty}
@@ -127,19 +113,19 @@
   \vspace{0.45cm}
   \begin{projectbox}{courseNavy}
     \textbf{PROJECT TITLE}\par
-    \TextField[name=projectTitle,width=\linewidth,height=1.80em,
-    bordercolor={0.10 0.21 0.36},backgroundcolor={1 1 1}]{}
+    \vspace{2pt}
+    {\large\bfseries Autonomous Software Development Team}
   \end{projectbox}
 
   \small
   \begin{tabularx}{\linewidth}{@{}L{0.30\linewidth}Y@{}}
-    \textbf{Full Name} & \coverfield \\
-    \textbf{Student ID} & \coverfield \\
-    \textbf{Department / Program} & \coverfield \\
-    \textbf{Email Address} & \coverfield \\
-    \textbf{GitHub / Project URL} & \coverfield \\
-    \textbf{Demo / Video URL (if available)} & \coverfield \\
-    \textbf{Submission Date} & \coverfield \\
+    \textbf{Full Name} & Zain Alabdeen Mohsin Bdaiwi Almawla \\
+    \textbf{Student ID} & 220201831 \\
+    \textbf{Department / Program} & Computer Engineering \\
+    \textbf{Email Address} & \href{mailto:220201831@ostimteknik.edu.tr}{220201831@ostimteknik.edu.tr} \\
+    \textbf{GitHub / Project URL} & \href{https://github.com/zico20/Dev-Team}{github.com/zico20/Dev-Team} \\
+    \textbf{Demo / Video URL (if available)} & Not applicable -- no demo video was recorded for this submission. \\
+    \textbf{Submission Date} & 19/08/2026 \\
   \end{tabularx}
 
   \vfill
@@ -162,17 +148,20 @@
 \addcontentsline{toc}{section}{Brief Description}
 
 \begin{projectbox}{courseBlue}
-This document is designed to present the individual term project briefly and clearly.
-Complete only the fields relevant to your project. There is no single required method
-for the technology, architecture, or file structure; briefly explaining your choices is sufficient.
+This document presents \emph{Autonomous Software Development Team}, a bounded, multi-agent
+system that takes a natural-language feature request from idea to reviewed, tested, working
+code. Five role-scoped agents (Product Owner, System Architect, Coder, QA/Tester, Code
+Reviewer) are orchestrated by Claude Code through a single slash command, with real test
+execution, JSON-Schema-validated hand-offs at every stage boundary, and a bounded
+reject/fix loop that escalates to a human instead of retrying forever.
 \end{projectbox}
 
 \begin{itemize}
-  \item Explanations should be concise, clear, and specific to the project.
-  \item Links may be provided for evidence such as a code repository, screenshots, a demo, or test output.
-  \item Use whichever approach suits the project: a single agent, multiple agents, a fixed workflow, tool integration, or a multimodal system.
-  \item Using MCP, a Skill package, specific folder names, or a particular platform is not mandatory.
-  \item Secret keys, passwords, and personal data must not be included in the submission files.
+  \item Explanations below are specific to this project and to the two example features built with it.
+  \item The public source repository, the full audit log, and real pytest output are provided as evidence.
+  \item The project uses a fixed multi-agent workflow (five cooperating Claude Code sub-agents) coordinated by one orchestrating slash command.
+  \item No MCP servers, external APIs, or paid third-party services are used; only Claude Code sub-agents, plain Python, and the standard library.
+  \item No secret keys, passwords, or personal data are included anywhere in the submitted files.
 \end{itemize}
 
 \tableofcontents
@@ -182,37 +171,171 @@ for the technology, architecture, or file structure; briefly explaining your cho
 \section{Project Summary}
 \sectionintro{Provide a general overview of the project in a few short paragraphs.}
 
-\answerarea[2.4cm]{The problem the project aims to solve}
-\answerarea[2.4cm]{The purpose of the project and its target users}
-\answerarea[3.2cm]{Brief project summary: How does the system work overall, and what does it produce?}
+\answerarea{The problem the project aims to solve}{
+A realistic software feature request normally passes through several distinct roles --
+product owner, architect, implementer, tester, and reviewer -- each with a different
+responsibility and a different view of ``done.'' When a single AI agent is asked to play
+all of these roles at once, its own approval of its own code is not a trustworthy signal:
+there is no separation of concerns, no ground-truth verification step, and no defined
+stopping condition if the agent keeps disagreeing with itself. This project addresses that
+gap by splitting the process into five least-privilege agents with a real, executable test
+suite as the ground truth, JSON-Schema validation at every hand-off, and an explicit,
+bounded retry limit that hands control back to a human instead of looping indefinitely.
+}
+
+\answerarea{The purpose of the project and its target users}{
+The purpose is to demonstrate a small but genuinely trustworthy autonomous development
+pipeline: one that a developer could hand a feature request to and receive back either
+working, reviewed code, or a clear, structured explanation of why it could not be produced
+automatically. The target users are developers or teams who want repeatable,
+auditable AI-assisted development -- with verifiable test results and an audit trail --
+rather than a single opaque ``AI wrote this, trust it'' output.
+}
+
+\answerarea{Brief project summary: How does the system work overall, and what does it produce?}{
+The system is implemented as five Claude Code sub-agents plus one orchestrating slash
+command (\texttt{/build-feature}). A \emph{linear build phase} turns a raw feature
+request into a schema-validated \texttt{requirements.md} (Product Owner) and then a
+schema-validated \texttt{architecture.md} design proposal (System Architect); coding does
+not start until this design exists. The Coder then implements the source code. From this
+point a \emph{bounded, verified review loop} runs: the real \texttt{pytest} suite is
+executed and converted into a ground-truth \texttt{test-results.json}; the QA/Tester
+(read-only) inspects the code and test output for logic and security issues; the Code
+Reviewer (read-only) makes the final approve/reject call, and any failing test is an
+automatic reject regardless of the reviewer's own opinion. A rejection sends specific
+feedback back to the Coder for another attempt, up to three attempts; if the third attempt
+is also rejected, the system builds a structured \texttt{escalation.json} for a human
+instead of retrying a fourth time. Every stage of every attempt is appended to an
+append-only audit log (\texttt{logs/dev-team-audit.jsonl}). The output of a successful run
+is working, tested source code plus the full paper trail (requirements, architecture, test
+results, QA report, review verdict) that produced it.
+}
 
 \begin{tabularx}{\linewidth}{@{}L{0.34\linewidth}Y@{}}
-\textbf{Application domain} & \singlefield \\
-\textbf{Languages / technologies used} & \singlefield \\
-\textbf{Models or services used} & \singlefield \\
-\textbf{Current project status} & \singlefield \\
+\textbf{Application domain} & Software engineering process automation / multi-agent orchestration \\
+\textbf{Languages / technologies used} & Python 3.12, pytest, jsonschema, Bash, JSON Schema (draft-07), GitHub Actions \\
+\textbf{Models or services used} & Claude Code sub-agents (Claude Sonnet 5), driving five role-scoped agent identities \\
+\textbf{Current project status} & Complete and working end-to-end; validated on two real features and three distinct pipeline scenarios (see Section~6) \\
 \end{tabularx}
 
 % ================================================================
 \section{Input, Output, and Usage}
 \sectionintro{Summarize what the system receives, what it produces, and how it is used.}
 
-\answerarea[2.5cm]{Primary inputs}
-\answerarea[2.5cm]{Primary outputs}
-\answerarea[3.0cm]{Brief usage scenario: Main steps from the user request to the result}
-\answerarea[2.4cm]{A sample input and its corresponding output}
+\answerarea{Primary inputs}{
+A single natural-language feature request, either typed inline as an argument to the
+\texttt{/build-feature} command or provided as a Markdown file (e.g.\ \texttt{feature-request.md})
+describing the desired functionality, constraints, and any known edge cases.
+}
+
+\answerarea{Primary outputs}{
+Working, tested source code approved by the Code Reviewer; the supporting documents
+\texttt{requirements.md} and \texttt{architecture.md}; the ground-truth
+\texttt{test-results.json}; the \texttt{qa-report.json} and \texttt{review-result.json};
+and, only when the review loop is exhausted after three rejections, a structured
+\texttt{escalation.json} describing exactly what a human needs to look at. Every stage is
+also appended to \texttt{logs/dev-team-audit.jsonl} as a permanent audit trail.
+}
+
+\answerarea{Brief usage scenario: Main steps from the user request to the result}{
+(1)~The user writes a feature request. (2)~The user runs
+\texttt{/build-feature feature-request.md} inside Claude Code. (3)~Product Owner,
+System Architect, and Coder run in sequence, each output validated against its JSON
+Schema before the next stage may use it. (4)~The real \texttt{pytest} suite is executed
+via \texttt{scripts/run\_tests.sh}, wrapped in \texttt{scripts/run\_with\_retry.py} for
+bounded infrastructure retries. (5)~QA/Tester and Code Reviewer evaluate the current code
+and test results. (6a)~If approved, the loop ends and the code is ready to use. (6b)~If
+rejected and fewer than three attempts have been made, specific feedback is sent back to
+the Coder and the loop repeats. (6c)~If the third attempt is also rejected, the system
+builds \texttt{escalation.json} and stops instead of retrying again.
+}
+
+\answerarea{A sample input and its corresponding output}{
+\textbf{Input:} ``Add a small, self-contained Python utility function that generates a
+random password guaranteed to satisfy all five rules used by the existing
+\texttt{password\_strength.py} checker, using cryptographically secure randomness.''\\[3pt]
+\textbf{Output:} \texttt{password\_generator.py}, exposing
+\texttt{generate\_password(length=12)}, approved by the Code Reviewer on the first
+attempt with 33/33 pytest tests passing (see Section~6, Trial~4), together with
+\texttt{requirements.md}, \texttt{architecture.md}, \texttt{test-results.json},
+\texttt{qa-report.json}, and \texttt{review-result.json} for that run.
+}
 
 % ================================================================
 \section{System Design}
 \sectionintro{Describe the architecture only to the extent that it applies to your project.}
 
-\answerarea[3.0cm]{Why did you choose this approach? Briefly justify the choice of an agent, workflow, or traditional software}
-\answerarea[3.0cm]{The system's main components and their responsibilities}
-\answerarea[2.8cm]{The main data or task flow between components}
+\answerarea{Why did you choose this approach? Briefly justify the choice of an agent, workflow, or traditional software}{
+A fixed, role-scoped multi-agent workflow was chosen over a single do-everything agent for
+three reasons. First, \emph{least-privilege tool access} is only meaningful if roles are
+genuinely separate: the QA/Tester has Read/Grep only and the Code Reviewer has Read only,
+so neither can silently ``fix'' the code it is supposed to be gating -- a property a single
+agent cannot have. Second, a \emph{fixed workflow with explicit stage boundaries} makes it
+possible to validate each hand-off against a JSON Schema and fail fast at exactly the
+boundary where something went wrong, instead of an error surfacing several steps later in a
+confusing form. Third, \emph{real test execution} (an actual \texttt{pytest} run, not an
+agent's self-report) gives a ground-truth signal that a failing test is always an automatic
+reject, which removes an entire class of the "the agent approved its own mistake" failure
+mode that a single-agent design is exposed to.
+}
+
+\answerarea{The system's main components and their responsibilities}{
+\textbf{Product Owner} (Read/Write, own document only) turns the raw request into structured
+\texttt{requirements.md}. \textbf{System Architect} (Read/Write, own document only) turns
+requirements into a \texttt{architecture.md} design proposal -- a plan for approval, not
+code. \textbf{Coder} (Read/Write, source files only, never test files) implements the
+design and, on rejection, fixes only what was flagged. \textbf{QA/Tester} (Read/Grep only,
+cannot modify anything) searches the code for logic and security issues and reports them.
+\textbf{Code Reviewer} (Read only) makes the final approve/reject call using QA's report and
+the ground-truth test results. Supporting these five agents: \texttt{scripts/} (schema
+validation, the real test runner, bounded infra-retry, escalation building, and audit
+logging) and \texttt{schemas/} (one JSON Schema per agent output).
+}
+
+\answerarea{The main data or task flow between components}{
+\texttt{feature-request.md} $\rightarrow$ \texttt{requirements.md} (schema-validated)
+$\rightarrow$ \texttt{architecture.md} (schema-validated) $\rightarrow$ Coder writes source
+$\rightarrow$ \texttt{scripts/run\_with\_retry.py} wraps the real \texttt{pytest} run
+$\rightarrow$ \texttt{test-results.json} (ground truth) $\rightarrow$ QA report
+$\rightarrow$ Code Reviewer verdict (approved / rejected, with a confidence level)
+$\rightarrow$ on rejection with attempts remaining, feedback loops back to the Coder; on the
+third rejection, \texttt{scripts/build\_escalation.py} produces \texttt{escalation.json}
+instead. Every stage of every attempt is appended to
+\texttt{logs/dev-team-audit.jsonl}. See the diagram below.
+}
 
 \begin{projectbox}{courseTeal}
-\textbf{Simple architecture diagram area (optional):}\par
-\vspace{6.5cm}
+\textbf{Pipeline architecture diagram:}\par
+\vspace{4pt}
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  node distance=6mm and 7mm,
+  box/.style={draw, rounded corners, fill=courseBlue!8, draw=courseBlue, align=center, minimum height=1.15cm, font=\small, text width=2.35cm},
+  gate/.style={draw, rounded corners, fill=courseTeal!10, draw=courseTeal, align=center, minimum height=1.15cm, font=\small, text width=2.35cm},
+  esc/.style={draw, rounded corners, fill=courseRed!10, draw=courseRed, align=center, minimum height=1.05cm, font=\small, text width=3.6cm},
+  arr/.style={-{Latex[length=2.4mm]}, thick}
+]
+\node[box] (po) {Product\\Owner};
+\node[box, right=of po] (arch) {System\\Architect};
+\node[box, right=of arch] (coder) {Coder};
+\node[gate, right=of coder] (test) {Test Runner\\(pytest)};
+\node[gate, right=of test] (qa) {QA\\Tester};
+\node[gate, right=of qa] (rev) {Code\\Reviewer};
+
+\draw[arr] (po) -- (arch);
+\draw[arr] (arch) -- (coder);
+\draw[arr] (coder) -- (test);
+\draw[arr] (test) -- (qa);
+\draw[arr] (qa) -- (rev);
+
+\node[esc, below=16mm of test] (esc) {Escalation to human\\(after 3 rejections)};
+\draw[arr, courseRed] (rev.south) -| node[above, pos=0.75, font=\small] {reject, attempt = 3} (esc.east);
+\draw[arr, courseOrange] (rev.south) .. controls +(0,-12mm) and +(0,-12mm) .. node[below, font=\small] {reject, attempt \textless\ 3} (coder.south);
+\node[above=2mm of po, font=\small\bfseries] (fr) {Feature Request};
+\draw[arr] (fr) -- (po);
+\node[above=2mm of rev, font=\small\bfseries, text=courseTeal] {Approved};
+\end{tikzpicture}%
+}
 \end{projectbox}
 
 % ================================================================
@@ -223,47 +346,113 @@ for the technology, architecture, or file structure; briefly explaining your cho
 \toprule
 \textbf{Component / agent / tool} & \textbf{Brief responsibility} & \textbf{Information received or produced} \\
 \midrule
-\singlefield[3.0cm] & \singlefield & \singlefield \\
-\singlefield[3.0cm] & \singlefield & \singlefield \\
-\singlefield[3.0cm] & \singlefield & \singlefield \\
-\singlefield[3.0cm] & \singlefield & \singlefield \\
+Product Owner & Converts the raw feature request into unambiguous, structured requirements & Reads the raw request; writes schema-validated \texttt{requirements.md} \\
+System Architect & Designs the system architecture as a proposal for approval, not code & Reads \texttt{requirements.md}; writes schema-validated \texttt{architecture.md} \\
+Coder & Implements the approved design; on rejection, fixes exactly what was flagged & Reads requirements/architecture (or latest rejection feedback); writes only source files, never tests \\
+QA/Tester & Searches the current code and test results for logic and security issues (read-only) & Reads current source and \texttt{test-results.json}; returns a structured findings report \\
+Code Reviewer & Makes the final approve/reject decision (read-only, cannot fix anything itself) & Reads QA's report, test results, and code; returns verdict, confidence, and rejection feedback \\
 \bottomrule
 \end{tabularx}
 
-\answerarea[2.7cm]{APIs, data sources, MCP, Skills, models, or other integrations used (if any)}
-\answerarea[2.7cm]{Important decisions, permission boundaries, or operations requiring human approval (if any)}
+\answerarea{APIs, data sources, MCP, Skills, models, or other integrations used (if any)}{
+Not used. The project deliberately relies only on Claude Code's built-in sub-agent and
+slash-command mechanism, plain Python 3, and the Python standard library -- no external
+APIs, no MCP servers, and no third-party services or paid models beyond the Claude models
+already driving the agents.
+}
+
+\answerarea{Important decisions, permission boundaries, or operations requiring human approval (if any)}{
+Tool access is least-privilege and fixed per role (table in \texttt{CLAUDE.md}): Product
+Owner and System Architect may Read/Write only their own document; the Coder may Read/Write
+source files only and is explicitly forbidden from touching test files; QA/Tester has
+Read/Grep only and cannot modify anything; the Code Reviewer has Read only and cannot fix
+code, only describe what must change. Any failing test, or any high-severity security
+finding from QA, is an automatic reject with no judgment call. The review loop is bounded
+at three rejected attempts, after which the system escalates to a human instead of retrying
+again. Pushing the finished project to the public GitHub repository was an explicit,
+separate action confirmed with the project owner before it was carried out.
+}
 
 % ================================================================
 \section{Implementation and Execution}
 
 \begin{tabularx}{\linewidth}{@{}L{0.35\linewidth}Y@{}}
-\textbf{Source code URL} & \singlefield \\
-\textbf{Main execution command} & \singlefield \\
-\textbf{Required core dependencies} & \singlefield \\
-\textbf{Important files or folders} & \singlefield \\
-\textbf{Execution environment} & \singlefield \\
+\textbf{Source code URL} & \href{https://github.com/zico20/Dev-Team}{github.com/zico20/Dev-Team} \\
+\textbf{Main execution command} & \texttt{/build-feature feature-request.md} (run inside Claude Code, in the project directory) \\
+\textbf{Required core dependencies} & Python 3.10+, \texttt{pytest>=7.0}, \texttt{jsonschema>=4.0} (see \texttt{requirements-dev.txt}); a POSIX shell (\texttt{bash}) to run \texttt{scripts/run\_tests.sh} \\
+\textbf{Important files or folders} & \texttt{CLAUDE.md} (project-wide rules); \texttt{.claude/agents/*.md} (five agent identities); \texttt{.claude/commands/build-feature.md} (orchestration); \texttt{schemas/*.json}; \texttt{scripts/*.py}, \texttt{scripts/run\_tests.sh}; \texttt{logs/dev-team-audit.jsonl} \\
+\textbf{Execution environment} & Developed and tested on Windows~11 (PowerShell + Git~Bash) via Claude Code; a GitHub Actions workflow (\texttt{.github/workflows/dev-team-pipeline.yml}) runs the same pipeline headlessly on Linux for \texttt{feature/**} branches \\
 \end{tabularx}
 
-\answerarea[3.0cm]{Brief installation and usage steps for running the project}
-\answerarea[2.5cm]{A significant technical problem encountered and the solution applied}
+\answerarea{Brief installation and usage steps for running the project}{
+(1)~Clone the repository and install the Python dependencies:
+\texttt{pip install -r requirements-dev.txt}. (2)~Write the desired feature in a Markdown
+file, e.g.\ \texttt{feature-request.md}. (3)~Inside Claude Code, in the project directory,
+run \texttt{/build-feature feature-request.md}. (4)~Watch the linear build phase
+(Product~Owner~$\rightarrow$~Architect~$\rightarrow$~Coder) run, followed by the bounded
+review loop (Test~Runner~$\rightarrow$~QA~$\rightarrow$~Reviewer, up to three attempts).
+(5)~Inspect \texttt{review-result.json} for the verdict, or \texttt{escalation.json} if the
+loop was exhausted. (6)~Optionally push a \texttt{feature/**} branch to trigger the same
+pipeline headlessly in GitHub Actions.
+}
+
+\answerarea{A significant technical problem encountered and the solution applied}{
+The project's ground-truth test-execution script, \texttt{scripts/run\_tests.sh}, is a Bash
+script invoked via a shebang line -- which works transparently on the Linux CI runner but
+not on native Windows, where a shebang cannot be executed directly. Beyond that, the script
+originally forwarded \texttt{pytest}'s raw exit code to the caller; since \texttt{pytest}
+exits with code~1 whenever any test simply \emph{fails} (a completely normal outcome, not a
+tooling crash), the bounded infra-retry wrapper \texttt{scripts/run\_with\_retry.py} was
+misclassifying ordinary failing-test results as a transient infrastructure error, retrying
+them needlessly, and ultimately routing them toward an infrastructure escalation instead of
+letting the Code Reviewer make the intended automatic-reject decision. Both issues were
+found only by actually executing the pipeline end-to-end, not by reading the code. The fix
+was two-fold: \texttt{run\_with\_retry.py} now transparently prepends \texttt{bash} for any
+\texttt{.sh} command on Windows, and \texttt{run\_tests.sh} now treats \texttt{pytest} exit
+codes~0 and~1 as a successful run of the \emph{test runner} itself (only codes greater than
+1 -- usage errors, internal errors, no tests collected -- are treated as real infrastructure
+failures), so a failing test now correctly reaches the review loop as an ordinary, expected
+rejection instead of being swallowed by the infra-retry path.
+}
 
 % ================================================================
 \section{Tests and Results}
 \sectionintro{Describe the basic checks performed to demonstrate that the project works.}
 
-\begin{tabularx}{\linewidth}{@{}C{0.7cm}Y Y L{2.5cm}@{}}
+\begin{tabularx}{\linewidth}{@{}C{0.7cm}Y Y L{2.1cm}@{}}
 \toprule
 & \textbf{Trial / test} & \textbf{Result obtained} & \textbf{Status} \\
 \midrule
-1 & \singlefield & \singlefield & \singlefield[2.3cm] \\
-2 & \singlefield & \singlefield & \singlefield[2.3cm] \\
-3 & \singlefield & \singlefield & \singlefield[2.3cm] \\
-4 & \singlefield & \singlefield & \singlefield[2.3cm] \\
+1 & End-to-end pipeline run, Feature~1: \texttt{password\_strength.py} (password strength checker) & Approved by Code Reviewer on the first attempt; 8/8 \texttt{pytest} tests passed; QA/Tester found no logic or security issues & Pass \\
+2 & Deliberate single-bug injection to exercise the reject/fix loop (an off-by-one rating threshold) & Rejected on attempt~1 with specific, line-level feedback; Coder fixed exactly that issue on attempt~2; 8/8 tests passed; approved on attempt~2 & Pass \\
+3 & Deliberate three-independent-bug scenario to exercise the escalation path (length threshold, inverted special-character check, comparison-operator bug -- one fresh bug per round) & Three consecutive real rejections, each caused by a genuine failing \texttt{pytest} test and confirmed by QA/Tester; the loop stopped after attempt~3 and produced a schema-valid \texttt{escalation.json} instead of attempting a fourth time & Pass \\
+4 & End-to-end pipeline run, Feature~2: \texttt{password\_generator.py} (cryptographically secure random password generator) & Approved by Code Reviewer on the first attempt; 33/33 \texttt{pytest} tests passed (8 existing + 25 new); QA/Tester specifically verified that only the \texttt{secrets} module (never \texttt{random}) is used for randomness & Pass \\
 \bottomrule
 \end{tabularx}
 
-\answerarea[3.0cm]{Overall result: To what extent did the project achieve its objective?}
-\answerarea[2.7cm]{Known limitations or incomplete aspects}
+\answerarea{Overall result: To what extent did the project achieve its objective?}{
+The project fully achieves its stated objective. Across four independent, real (not
+simulated) runs it demonstrated: a clean approval on the first attempt for two different
+features; a genuine reject-then-fix cycle in which the Coder repaired exactly what was
+flagged and nothing else; and a genuine three-strikes escalation in which the system
+correctly refused to attempt a fourth fix and instead produced a structured, schema-valid
+hand-off for a human. Every test result quoted above comes from an actual \texttt{pytest}
+run converted into \texttt{test-results.json}, not from an agent's self-report, and the full
+sequence of every attempt is preserved in \texttt{logs/dev-team-audit.jsonl}.
+}
+
+\answerarea{Known limitations or incomplete aspects}{
+All validation in this submission was run manually within a single Claude Code session; the
+GitHub Actions headless path (\texttt{.github/workflows/dev-team-pipeline.yml}) exists and
+mirrors the same logic but was not separately exercised for this submission. JSON-Schema
+validation catches structural errors in agent output (missing fields, wrong types) but
+cannot catch a semantically wrong-but-well-formed answer. Both example features are small,
+single-file, pure-function utilities; the pipeline has not yet been exercised on a
+multi-file feature or one that touches a user interface. Finally, the two Windows-specific
+script bugs described in Section~5 were found only by actually running the pipeline on
+Windows, which suggests the Linux/CI code path is comparatively more battle-tested than the
+local Windows path used for this submission.
+}
 
 % ================================================================
 \section{Security and Responsible Use}
@@ -273,37 +462,83 @@ for the technology, architecture, or file structure; briefly explaining your cho
 \toprule
 \textbf{OK} & \textbf{Check} \\
 \midrule
-\checkfield & Secret keys and passwords were not included in the source code. \\
-\checkfield & User data was processed only to the extent necessary. \\
-\checkfield & Risky or irreversible operations were restricted. \\
-\checkfield & Sources and third-party content used were identified. \\
+\yes & Secret keys and passwords were not included in the source code. \\
+\yes & User data was processed only to the extent necessary. \\
+\yes & Risky or irreversible operations were restricted. \\
+\yes & Sources and third-party content used were identified. \\
 \bottomrule
 \end{tabularx}
 
-\answerarea[2.8cm]{Project-specific security, ethics, privacy, or copyright concerns and the measures taken}
+\answerarea{Project-specific security, ethics, privacy, or copyright concerns and the measures taken}{
+No end-user personal data is processed by this project at all -- its two example features
+operate only on password strings supplied directly by a caller and never log, print, or
+persist them. Because the example domain is password handling, randomness quality was
+treated as a first-class concern: \texttt{password\_generator.py} draws exclusively from
+Python's \texttt{secrets} module (never the non-cryptographic \texttt{random} module), and
+this was explicitly verified by the QA/Tester agent rather than merely assumed. Risky or
+irreversible operations were kept restricted by design: each agent's file-system access is
+scoped to the minimum its role requires (Section~4), destructive git operations were never
+used, and the one action with external, hard-to-reverse effect in this project -- pushing
+the repository to the public GitHub remote -- was explicitly confirmed with the project
+owner before being carried out rather than performed automatically. No third-party code,
+datasets, or copyrighted material are included in the submission.
+}
 
 % ================================================================
 \section{Conclusion and Future Work}
 
-\answerarea[3.0cm]{The most important results and learning outcomes obtained from the project}
-\answerarea[3.0cm]{Improvements that could be made with more time}
-\answerarea[2.5cm]{Core course concepts applied in the project}
+\answerarea{The most important results and learning outcomes obtained from the project}{
+The most important result is that the bounded, schema-gated, multi-agent review loop was
+not just designed but actually built and exercised end-to-end, including its least-common
+paths: a genuine reject-and-fix cycle and a genuine three-strikes escalation, both driven by
+real agents and a real test suite rather than scripted or simulated for the demonstration.
+A second, unplanned but valuable outcome was that running the system for real -- rather than
+only reading or reasoning about the code -- surfaced two real defects in the orchestration
+scripts themselves (Section~5), reinforcing that execution-based verification catches classes
+of bugs that code review alone does not.
+}
+
+\answerarea{Improvements that could be made with more time}{
+With more time, the next steps would be: exercising the GitHub Actions headless path for
+this same submission rather than only the local run; extending the pipeline to a multi-file
+feature and to one with a user-facing interface, to test whether the current agent
+boundaries still hold at larger scope; adding an automated regression check for the two
+Windows-specific script fixes so they cannot silently regress; and adding lightweight
+per-stage cost/token tracking to the audit log so the loop's efficiency, not just its
+correctness, can be measured over many runs.
+}
+
+\answerarea{Core course concepts applied in the project}{
+Multi-agent orchestration with clearly separated roles; least-privilege permission
+boundaries enforced per agent; structured, schema-validated inter-agent communication with
+fail-fast validation at every hand-off; bounded autonomous loops with an explicit stopping
+condition and human escalation; the distinction between a normal rejection and an
+infrastructure failure, with separate, appropriately-sized retry policies for each;
+graceful degradation when an agent's own output cannot be trusted; and observability via a
+complete, append-only audit log.
+}
 
 % ================================================================
 \section{References and Submission Checklist}
 
-\answerarea[3.5cm]{Documents, articles, datasets, models, open-source projects, or other resources used}
+\answerarea{Documents, articles, datasets, models, open-source projects, or other resources used}{
+Claude Code documentation (sub-agents and slash commands); Python \texttt{secrets} module
+documentation (standard library); the JSON Schema specification, draft-07; the
+\texttt{pytest} documentation. No datasets, pretrained models, or third-party open-source
+code were used beyond the Python standard library and the Claude models already driving the
+agents.
+}
 
 \begin{tabularx}{\linewidth}{@{}C{1.0cm}Y@{}}
 \toprule
 \textbf{OK} & \textbf{Submission item} \\
 \midrule
-\checkfield & A completed PDF version of this form is included. \\
-\checkfield & The source code or project files are accessible. \\
-\checkfield & Installation and execution instructions are included. \\
-\checkfield & A test result or sample usage result is included. \\
-\checkfield & No secret keys, passwords, or unauthorized personal data are included. \\
-\checkfield & Demo, video, or supplementary file links work, if provided. \\
+\yes & A completed PDF version of this form is included. \\
+\yes & The source code or project files are accessible. \\
+\yes & Installation and execution instructions are included. \\
+\yes & A test result or sample usage result is included. \\
+\yes & No secret keys, passwords, or unauthorized personal data are included. \\
+ & Demo, video, or supplementary file links work, if provided -- not applicable (no demo video was provided for this submission). \\
 \bottomrule
 \end{tabularx}
 
@@ -318,11 +553,10 @@ the submission files contain no secret keys or unauthorized personal data.
 
 \vspace{6mm}
 \begin{tabularx}{\linewidth}{@{}L{0.25\linewidth}Y@{}}
-\textbf{Full Name} & \singlefield \\
-\textbf{Student ID} & \singlefield \\
-\textbf{Date} & \singlefield \\
+\textbf{Full Name} & Zain Alabdeen Mohsin Bdaiwi Almawla \\
+\textbf{Student ID} & 220201831 \\
+\textbf{Date} & 19/08/2026 \\
 \textbf{Signature} & \rule{\linewidth}{0.4pt} \\
 \end{tabularx}
 
-\end{Form}
 \end{document}
