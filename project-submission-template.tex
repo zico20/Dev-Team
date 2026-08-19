@@ -1,0 +1,328 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\renewcommand{\contentsname}{Contents}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=2.1cm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+\usepackage{hyperref}
+
+% -----------------------------------------------------------------
+% SENG 456 -- Bireysel Proje Teslim Evrakı
+% Belge hem ekranda doldurulabilir hem de yazdırılabilir.
+% -----------------------------------------------------------------
+
+\definecolor{courseNavy}{HTML}{17365D}
+\definecolor{courseBlue}{HTML}{2F5597}
+\definecolor{courseTeal}{HTML}{2F6F6D}
+\definecolor{courseOrange}{HTML}{A65E20}
+\definecolor{courseRed}{HTML}{9C2F2F}
+\definecolor{coursePaper}{HTML}{F7F4EC}
+\definecolor{courseGray}{HTML}{5B6573}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=courseBlue,
+  urlcolor=courseBlue,
+  pdfauthor={OSTIM Technical University -- Software Engineering},
+  pdftitle={SENG 456 Individual Project Submission Form},
+  pdfsubject={Agent Orchestration and Multimodal Systems Term Project}
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlist[itemize]{leftmargin=1.6em,itemsep=2pt,topsep=3pt}
+\setlist[enumerate]{leftmargin=1.8em,itemsep=3pt,topsep=3pt}
+\renewcommand{\arraystretch}{1.25}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small SENG 456 -- Individual Project Submission Form}
+\fancyhead[R]{\small \textcolor{courseGray}{2026 Summer School}}
+\fancyfoot[L]{\small OSTIM Technical University -- Software Engineering}
+\fancyfoot[R]{\small Page \thepage/\pageref*{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\newtcolorbox{projectbox}[2][]{
+  colback=coursePaper,
+  colframe=#2,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=3mm,right=3mm,top=2mm,bottom=2mm,
+  before skip=6pt,after skip=6pt,
+  #1
+}
+
+\newcommand{\sectionintro}[1]{\textcolor{courseGray}{\small #1}\par\vspace{2pt}}
+
+% Her PDF form alanının adı benzersizdir.
+\newcounter{fieldcounter}
+\newcommand{\singlefield}[1][\linewidth]{%
+  \stepcounter{fieldcounter}%
+  \TextField[name=field\arabic{fieldcounter},width=#1,height=1.75em,
+  bordercolor={0.72 0.75 0.79},backgroundcolor={1 1 1}]{}%
+}
+\newcommand{\multifield}[1][3.2cm]{%
+  \stepcounter{fieldcounter}%
+  \TextField[multiline=true,name=field\arabic{fieldcounter},width=\linewidth,height=#1,
+  bordercolor={0.72 0.75 0.79},backgroundcolor={1 1 1}]{}%
+}
+\newcommand{\checkfield}{%
+  \stepcounter{fieldcounter}%
+  \CheckBox[name=field\arabic{fieldcounter},width=1.2em,height=1.2em,
+  bordercolor={0.35 0.40 0.45}]{}%
+}
+\newcommand{\coverfield}{%
+  \stepcounter{fieldcounter}%
+  \TextField[name=field\arabic{fieldcounter},width=\linewidth,height=1.30em,
+  bordercolor={0.72 0.75 0.79},backgroundcolor={1 1 1}]{}%
+}
+\newcommand{\answerarea}[2][3.0cm]{\textbf{#2}\par\multifield[#1]}
+
+\begin{document}
+\begin{Form}
+\pagenumbering{roman}
+
+% ================================================================
+% KAPAK
+% ================================================================
+\begin{titlepage}
+  \thispagestyle{empty}
+  \begin{center}
+    \vspace*{0.2cm}
+    \IfFileExists{logos/LUT-LOGO-PNG.png}{%
+      \includegraphics[width=0.22\textwidth]{logos/LUT-LOGO-PNG.png}\par
+    }{}
+    \vspace{0.25cm}
+    {\large\bfseries OSTIM TECHNICAL UNIVERSITY\par}
+    {\normalsize Department of Software Engineering\par}
+    \vspace{0.35cm}
+    {\color{courseNavy}\rule{\linewidth}{1.4pt}\par}
+    \vspace{0.15cm}
+    {\Large\bfseries SENG 456\par}
+    {\large\bfseries AGENT ORCHESTRATION AND MULTIMODAL SYSTEMS\par}
+    \vspace{0.15cm}
+    {\color{courseNavy}\rule{\linewidth}{1.4pt}\par}
+    \vspace{0.35cm}
+    {\Large\bfseries INDIVIDUAL TERM PROJECT\par}
+    {\large\bfseries SUBMISSION FORM\par}
+  \end{center}
+
+  \vspace{0.45cm}
+  \begin{projectbox}{courseNavy}
+    \textbf{PROJECT TITLE}\par
+    \TextField[name=projectTitle,width=\linewidth,height=1.80em,
+    bordercolor={0.10 0.21 0.36},backgroundcolor={1 1 1}]{}
+  \end{projectbox}
+
+  \small
+  \begin{tabularx}{\linewidth}{@{}L{0.30\linewidth}Y@{}}
+    \textbf{Full Name} & \coverfield \\
+    \textbf{Student ID} & \coverfield \\
+    \textbf{Department / Program} & \coverfield \\
+    \textbf{Email Address} & \coverfield \\
+    \textbf{GitHub / Project URL} & \coverfield \\
+    \textbf{Demo / Video URL (if available)} & \coverfield \\
+    \textbf{Submission Date} & \coverfield \\
+  \end{tabularx}
+
+  \vfill
+  \begin{center}
+    \begin{tcolorbox}[width=0.88\linewidth,colback=courseBlue!6,colframe=courseBlue,
+      arc=2mm,left=2mm,right=2mm,top=1mm,bottom=1mm]
+      \centering
+      {\normalsize\bfseries PROJECT SUBMISSION URL}\par
+      {\Large\bfseries\href{https://myskillos.com/proje}{myskillos.com/proje}}\par
+      \footnotesize Upload this form and the project files to the specified address.
+    \end{tcolorbox}
+    {\footnotesize 2026 Summer School -- Dr. Ufuk ASIL \& Dr. Maksat ATAGOZIEV}
+  \end{center}
+\end{titlepage}
+
+\pagenumbering{arabic}
+
+% ================================================================
+\section*{Brief Description}
+\addcontentsline{toc}{section}{Brief Description}
+
+\begin{projectbox}{courseBlue}
+This document is designed to present the individual term project briefly and clearly.
+Complete only the fields relevant to your project. There is no single required method
+for the technology, architecture, or file structure; briefly explaining your choices is sufficient.
+\end{projectbox}
+
+\begin{itemize}
+  \item Explanations should be concise, clear, and specific to the project.
+  \item Links may be provided for evidence such as a code repository, screenshots, a demo, or test output.
+  \item Use whichever approach suits the project: a single agent, multiple agents, a fixed workflow, tool integration, or a multimodal system.
+  \item Using MCP, a Skill package, specific folder names, or a particular platform is not mandatory.
+  \item Secret keys, passwords, and personal data must not be included in the submission files.
+\end{itemize}
+
+\tableofcontents
+\newpage
+
+% ================================================================
+\section{Project Summary}
+\sectionintro{Provide a general overview of the project in a few short paragraphs.}
+
+\answerarea[2.4cm]{The problem the project aims to solve}
+\answerarea[2.4cm]{The purpose of the project and its target users}
+\answerarea[3.2cm]{Brief project summary: How does the system work overall, and what does it produce?}
+
+\begin{tabularx}{\linewidth}{@{}L{0.34\linewidth}Y@{}}
+\textbf{Application domain} & \singlefield \\
+\textbf{Languages / technologies used} & \singlefield \\
+\textbf{Models or services used} & \singlefield \\
+\textbf{Current project status} & \singlefield \\
+\end{tabularx}
+
+% ================================================================
+\section{Input, Output, and Usage}
+\sectionintro{Summarize what the system receives, what it produces, and how it is used.}
+
+\answerarea[2.5cm]{Primary inputs}
+\answerarea[2.5cm]{Primary outputs}
+\answerarea[3.0cm]{Brief usage scenario: Main steps from the user request to the result}
+\answerarea[2.4cm]{A sample input and its corresponding output}
+
+% ================================================================
+\section{System Design}
+\sectionintro{Describe the architecture only to the extent that it applies to your project.}
+
+\answerarea[3.0cm]{Why did you choose this approach? Briefly justify the choice of an agent, workflow, or traditional software}
+\answerarea[3.0cm]{The system's main components and their responsibilities}
+\answerarea[2.8cm]{The main data or task flow between components}
+
+\begin{projectbox}{courseTeal}
+\textbf{Simple architecture diagram area (optional):}\par
+\vspace{6.5cm}
+\end{projectbox}
+
+% ================================================================
+\section{Agents, Tools, and Integrations}
+\sectionintro{If your project does not use agents or external tools, you may write ``not used'' in the relevant rows.}
+
+\begin{tabularx}{\linewidth}{@{}L{3.2cm}Y Y@{}}
+\toprule
+\textbf{Component / agent / tool} & \textbf{Brief responsibility} & \textbf{Information received or produced} \\
+\midrule
+\singlefield[3.0cm] & \singlefield & \singlefield \\
+\singlefield[3.0cm] & \singlefield & \singlefield \\
+\singlefield[3.0cm] & \singlefield & \singlefield \\
+\singlefield[3.0cm] & \singlefield & \singlefield \\
+\bottomrule
+\end{tabularx}
+
+\answerarea[2.7cm]{APIs, data sources, MCP, Skills, models, or other integrations used (if any)}
+\answerarea[2.7cm]{Important decisions, permission boundaries, or operations requiring human approval (if any)}
+
+% ================================================================
+\section{Implementation and Execution}
+
+\begin{tabularx}{\linewidth}{@{}L{0.35\linewidth}Y@{}}
+\textbf{Source code URL} & \singlefield \\
+\textbf{Main execution command} & \singlefield \\
+\textbf{Required core dependencies} & \singlefield \\
+\textbf{Important files or folders} & \singlefield \\
+\textbf{Execution environment} & \singlefield \\
+\end{tabularx}
+
+\answerarea[3.0cm]{Brief installation and usage steps for running the project}
+\answerarea[2.5cm]{A significant technical problem encountered and the solution applied}
+
+% ================================================================
+\section{Tests and Results}
+\sectionintro{Describe the basic checks performed to demonstrate that the project works.}
+
+\begin{tabularx}{\linewidth}{@{}C{0.7cm}Y Y L{2.5cm}@{}}
+\toprule
+& \textbf{Trial / test} & \textbf{Result obtained} & \textbf{Status} \\
+\midrule
+1 & \singlefield & \singlefield & \singlefield[2.3cm] \\
+2 & \singlefield & \singlefield & \singlefield[2.3cm] \\
+3 & \singlefield & \singlefield & \singlefield[2.3cm] \\
+4 & \singlefield & \singlefield & \singlefield[2.3cm] \\
+\bottomrule
+\end{tabularx}
+
+\answerarea[3.0cm]{Overall result: To what extent did the project achieve its objective?}
+\answerarea[2.7cm]{Known limitations or incomplete aspects}
+
+% ================================================================
+\section{Security and Responsible Use}
+\sectionintro{Evaluate only the items relevant to your project.}
+
+\begin{tabularx}{\linewidth}{@{}C{1.0cm}Y@{}}
+\toprule
+\textbf{OK} & \textbf{Check} \\
+\midrule
+\checkfield & Secret keys and passwords were not included in the source code. \\
+\checkfield & User data was processed only to the extent necessary. \\
+\checkfield & Risky or irreversible operations were restricted. \\
+\checkfield & Sources and third-party content used were identified. \\
+\bottomrule
+\end{tabularx}
+
+\answerarea[2.8cm]{Project-specific security, ethics, privacy, or copyright concerns and the measures taken}
+
+% ================================================================
+\section{Conclusion and Future Work}
+
+\answerarea[3.0cm]{The most important results and learning outcomes obtained from the project}
+\answerarea[3.0cm]{Improvements that could be made with more time}
+\answerarea[2.5cm]{Core course concepts applied in the project}
+
+% ================================================================
+\section{References and Submission Checklist}
+
+\answerarea[3.5cm]{Documents, articles, datasets, models, open-source projects, or other resources used}
+
+\begin{tabularx}{\linewidth}{@{}C{1.0cm}Y@{}}
+\toprule
+\textbf{OK} & \textbf{Submission item} \\
+\midrule
+\checkfield & A completed PDF version of this form is included. \\
+\checkfield & The source code or project files are accessible. \\
+\checkfield & Installation and execution instructions are included. \\
+\checkfield & A test result or sample usage result is included. \\
+\checkfield & No secret keys, passwords, or unauthorized personal data are included. \\
+\checkfield & Demo, video, or supplementary file links work, if provided. \\
+\bottomrule
+\end{tabularx}
+
+% ================================================================
+\section{Student Declaration}
+
+\begin{projectbox}{courseRed}
+I declare that I prepared this project individually; identified the sources,
+third-party code, and artificial intelligence assistance I used; and ensured that
+the submission files contain no secret keys or unauthorized personal data.
+\end{projectbox}
+
+\vspace{6mm}
+\begin{tabularx}{\linewidth}{@{}L{0.25\linewidth}Y@{}}
+\textbf{Full Name} & \singlefield \\
+\textbf{Student ID} & \singlefield \\
+\textbf{Date} & \singlefield \\
+\textbf{Signature} & \rule{\linewidth}{0.4pt} \\
+\end{tabularx}
+
+\end{Form}
+\end{document}

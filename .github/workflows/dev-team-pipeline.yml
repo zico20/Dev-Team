@@ -1,0 +1,92 @@
+name: dev-team-pipeline
+
+# Runs the dev team automatically on every push to a feature branch —
+# the automated equivalent of the /build-feature command, including the
+# real test run (with bounded infra retries), schema validation gate,
+# graceful fallback if the reviewer's output is unusable, and structured
+# escalation instead of a silent failure.
+on:
+  push:
+    branches:
+      - "feature/**"
+
+jobs:
+  run-dev-team:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup
+        run: |
+          python3 -m pip install --upgrade pip
+          pip install -r requirements-dev.txt
+          chmod +x scripts/*.sh scripts/*.py
+
+      - name: run-dev-team-headless
+        # Non-interactive execution: the agent team runs without a human
+        # prompting each step, and reports success/failure via its exit code.
+        run: |
+          claude -p "/build-feature $(cat feature-request.md)" \
+            --output-format json > result.json
+
+      - name: run-real-tests-with-infra-retry
+        run: |
+          python3 scripts/run_with_retry.py test-runner 2 -- scripts/run_tests.sh || true
+        # test-results.json (pass/fail from the real suite) is produced
+        # regardless of outcome; a persistent infra failure instead writes
+        # error.json, handled in the escalation check below.
+
+      - name: validate-agent-outputs
+        id: validate
+        run: |
+          set -e
+          python3 scripts/validate_schema.py schemas/requirements.schema.json requirements.md
+          python3 scripts/validate_schema.py schemas/architecture.schema.json architecture.md
+          python3 scripts/validate_schema.py schemas/coder.schema.json coder-result.json
+          python3 scripts/validate_schema.py schemas/test_results.schema.json test-results.json
+          python3 scripts/validate_schema.py schemas/qa.schema.json qa-result.json
+
+      - name: validate-or-fallback-review-result
+        run: |
+          if python3 scripts/validate_schema.py schemas/review.schema.json review-result.json; then
+            echo "review-result.json is valid"
+          else
+            echo "code-reviewer output invalid — degrading to fallback gate"
+            python3 scripts/fallback_gate.py test-results.json
+            python3 scripts/validate_schema.py schemas/review.schema.json review-result.json
+          fi
+
+      - name: gate-on-review-and-tests
+        run: |
+          if [ -f error.json ]; then
+            retriable=$(jq -r '.retriable' error.json)
+            if [ "$retriable" != "true" ]; then
+              python3 scripts/build_escalation.py infra_error_permanent test-runner 0 unknown "$(jq -r '.message' error.json)"
+              echo "::error::infra failure at test-runner — see escalation.json"
+              exit 1
+            fi
+          fi
+
+          review_status=$(jq -r '.status' review-result.json)
+          test_status=$(jq -r '.status' test-results.json)
+          spotcheck=$(jq -r '.requires_human_spotcheck' review-result.json)
+
+          if [ "$review_status" != "approved" ] || [ "$test_status" != "pass" ]; then
+            echo "blocked: review_status=$review_status test_status=$test_status"
+            exit 1
+          fi
+
+          if [ "$spotcheck" = "true" ]; then
+            echo "::warning::approved with low confidence — requires a human spot-check before this is treated as fully verified"
+          fi
+
+      - name: upload-audit-log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-team-audit-log
+          path: |
+            logs/dev-team-audit.jsonl
+            escalation.json
+          if-no-files-found: ignore

@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "product-owner-output",
+  "type": "object",
+  "required": ["status", "agent", "feature_summary", "requirements", "acceptance_criteria", "open_questions"],
+  "properties": {
+    "status": { "type": "string", "enum": ["completed"] },
+    "agent": { "type": "string", "enum": ["product-owner"] },
+    "feature_summary": { "type": "string", "minLength": 1 },
+    "requirements": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "acceptance_criteria": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "open_questions": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

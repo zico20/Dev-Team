@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell($py3 = Get-Command python3 -ErrorAction SilentlyContinue; $py = Get-Command python -ErrorAction SilentlyContinue; $bash = Get-Command bash -ErrorAction SilentlyContinue; \"python3: $\\($py3.Source\\)\"; \"python: $\\($py.Source\\)\"; \"bash: $\\($bash.Source\\)\"; if \\($py\\) { & python --version })"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "test-runner-output",
+  "type": "object",
+  "required": ["status", "total", "passed", "failed", "failures"],
+  "properties": {
+    "status": { "type": "string", "enum": ["pass", "fail"] },
+    "total": { "type": "integer", "minimum": 0 },
+    "passed": { "type": "integer", "minimum": 0 },
+    "failed": { "type": "integer", "minimum": 0 },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["test_name", "message"],
+        "properties": {
+          "test_name": { "type": "string" },
+          "message": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

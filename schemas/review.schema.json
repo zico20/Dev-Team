@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "code-reviewer-output",
+  "type": "object",
+  "required": ["status", "agent", "reasoning", "rejection_feedback", "confidence", "requires_human_spotcheck"],
+  "properties": {
+    "status": { "type": "string", "enum": ["approved", "rejected"] },
+    "agent": { "type": "string", "enum": ["code-reviewer", "fallback-gate"] },
+    "reasoning": { "type": "string", "minLength": 1 },
+    "rejection_feedback": { "type": "array", "items": { "type": "string" } },
+    "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+    "requires_human_spotcheck": { "type": "boolean" }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "rejected" } } },
+      "then": { "properties": { "rejection_feedback": { "minItems": 1 } } }
+    },
+    {
+      "if": { "properties": { "confidence": { "const": "low" } } },
+      "then": { "properties": { "requires_human_spotcheck": { "const": true } } }
+    }
+  ]
+}

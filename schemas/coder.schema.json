@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "coder-output",
+  "type": "object",
+  "required": ["status", "agent", "attempt", "files_changed", "summary_of_changes"],
+  "properties": {
+    "status": { "type": "string", "enum": ["submitted_for_review", "escalate_to_human"] },
+    "agent": { "type": "string", "enum": ["coder"] },
+    "attempt": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "files_changed": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "summary_of_changes": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

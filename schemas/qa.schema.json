@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "qa-tester-output",
+  "type": "object",
+  "required": ["status", "agent", "logic_issues", "security_issues", "severity"],
+  "properties": {
+    "status": { "type": "string", "enum": ["completed"] },
+    "agent": { "type": "string", "enum": ["qa-tester"] },
+    "logic_issues": { "type": "array", "items": { "type": "string" } },
+    "security_issues": { "type": "array", "items": { "type": "string" } },
+    "severity": { "type": "string", "enum": ["none", "low", "medium", "high"] }
+  },
+  "additionalProperties": false
+}

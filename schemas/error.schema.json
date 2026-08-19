@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "infra-error",
+  "type": "object",
+  "required": ["type", "message", "retriable", "hint"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["schema_invalid", "permission_denied", "not_found", "timeout", "network", "unknown"]
+    },
+    "message": { "type": "string" },
+    "retriable": { "type": "boolean" },
+    "hint": { "type": "string" },
+    "stage": { "type": "string" },
+    "infra_attempts": { "type": "integer", "minimum": 1 }
+  },
+  "additionalProperties": false
+}

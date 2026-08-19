@@ -1,0 +1,10 @@
+{
+  "to": "human-engineering-lead",
+  "reason": "review_attempts_exhausted",
+  "boundary": "code-reviewer",
+  "attempt": 3,
+  "confidence": "high",
+  "summary": "password_strength.py line 73 uses > instead of >= for the medium-rating threshold, breaking test_medium_password_exactly_three_rules; rejected on 3 consecutive attempts, review loop bound reached",
+  "details_ref": "logs/dev-team-audit.jsonl",
+  "escalated_at": "2026-08-19T12:23:48.235714+00:00"
+}

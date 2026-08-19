@@ -1,0 +1,20 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "escalation",
+  "type": "object",
+  "required": ["to", "reason", "boundary", "attempt", "confidence", "summary", "details_ref", "escalated_at"],
+  "properties": {
+    "to": { "type": "string" },
+    "reason": {
+      "type": "string",
+      "enum": ["review_attempts_exhausted", "infra_error_permanent", "low_confidence_approval"]
+    },
+    "boundary": { "type": "string" },
+    "attempt": { "type": "integer", "minimum": 0 },
+    "confidence": { "type": "string", "enum": ["low", "medium", "high", "unknown"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "details_ref": { "type": "string" },
+    "escalated_at": { "type": "string" }
+  },
+  "additionalProperties": false
+}
